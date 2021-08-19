@@ -5,7 +5,7 @@ let scene, camera, renderer, light, helper;
 let shape, grid, gridMesh;
 
 //Variables for the rotation animation of both the light and the camera
-var radius = 10;
+var radius = 12;
 var radius2 = 5;
 var angle = 0;
 var angle2 = 0;
@@ -20,7 +20,8 @@ function init(){
 
     document.body.appendChild(renderer.domElement);
 
-    light = new THREE.DirectionalLight(0xFFFFFF, 1);
+    light = new THREE.DirectionalLight(0xf82d93, 1);
+    light.castShadow = true;
     scene.add(light);
     scene.add(light.target);
 
@@ -36,7 +37,7 @@ function init(){
 //This function initializes the shape on the scene
 function initShape(){
     const shapeGeo = new THREE.SphereGeometry(1, 32, 16);
-    const shapeMat = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, wireframe: false } );
+    const shapeMat = new THREE.MeshBasicMaterial( { color: 0xf82d93, wireframe: false } );
 
     shape = new THREE.Mesh(shapeGeo, shapeMat);
     shape.position.x = 10;
@@ -130,6 +131,7 @@ for (let i = 0; i < 100; i++){
 
 
 var framecount = 0;
+var playing = true;
 //This function recursively animates the scene by changing properties of the objects placed on the scene.
 function animate(){
     requestAnimationFrame(animate);
@@ -168,15 +170,22 @@ function animate(){
 
     }
 
-    if (framecount%37 == 0){
+    if (framecount%30 == 0 && framecount != 0){
         var rgb = {r: Math.random(), g: Math.random(), b: Math.random()}
         shape.material.color = rgb;
         light.color = rgb;
     }
     console.log(shape);
 
-    framecount += 1;
+    if (playing){
+        framecount += 1;   
+    }
+
     renderer.render(scene, camera);
+}
+
+function playAudio(){
+    playing = !playing;
 }
 
 //Function calls
